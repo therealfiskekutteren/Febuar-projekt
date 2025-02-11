@@ -3,22 +3,12 @@ import json
 
 class Model():
     def __init__(self):
-        test=None
+        word = None
+        word_data = None
 
 
     def get_word_json(self):
-        # gotresponse = False
-        # while gotresponse == False:
-        #     word = req.get("https://random-word-api.herokuapp.com/word").json()[0]
-        #     print("Randomword: "+word)
-        #     response = req.get("https://api.dictionaryapi.dev/api/v2/entries/en/"+word)
-        #     response = response.json()
-        #     try:
-        #         response[0]["word"]
-        #         if response[0]["phonetics"][0]["audio"] != '':
-        #             gotresponse = True
-        #     except:
-        #         continue
+
         while True:
             try:
                 response = req.get("https://random-word-api.herokuapp.com/word")
@@ -33,3 +23,8 @@ class Model():
                 break
 
         return response
+    
+    def set_word(self, word):
+        self.word = word
+    def set_data(self, data):
+        self.word_data = data

@@ -12,13 +12,22 @@ class View:
         self.label = tk.Label(self.root, text="Spelling bee")
         self.label.pack()
 
-        self.play_button = tk.Button(self.root, text="Get word")
+        self.get_button = tk.Button(self.root, text="Get word")
+        self.get_button.pack()
+
+        self.play_button = tk.Button(self.root, text="Play sound")
         self.play_button.pack()
-        
+
         self.input_bar = tk.Entry(self.root)
         self.input_bar.pack()
 
-        self.reveal_button = tk.Button(self.root, text="Submit word")
+        self.label_win = tk.Label(self.root, text="")
+        self.label_win.pack()
+
+        self.check_button = tk.Button(self.root, text="Submit word")
+        self.check_button.pack()
+
+        self.reveal_button = tk.Button(self.root, text="Reveal word")
         self.reveal_button.pack()
 
 
