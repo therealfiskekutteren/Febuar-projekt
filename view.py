@@ -17,6 +17,14 @@ class View:
 
         self.play_button = tk.Button(self.root, text="Play sound")
         self.play_button.pack()
+        self.button_frame = tk.Frame(self.root)
+        self.button_frame.pack()
+
+        self.definition_button = tk.Button(self.button_frame, text="Get definition")
+        self.definition_button.pack(side=tk.LEFT)
+
+        self.sentence_button = tk.Button(self.button_frame, text="Get sentence")
+        self.sentence_button.pack(side=tk.RIGHT)
 
         self.input_bar = tk.Entry(self.root)
         self.input_bar.pack()

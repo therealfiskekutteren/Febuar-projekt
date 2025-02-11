@@ -1,4 +1,5 @@
 import pyttsx3 as tts
+import re
 class Controller:
     def __init__(self, model, view):
         self.model = model
@@ -9,6 +10,8 @@ class Controller:
         self.view.play_button.config(command=self.button_play_sound)
         self.view.check_button.config(command=self.button_submit_word)
         self.view.reveal_button.config(command=self.button_reveal_word)
+        self.view.definition_button.config(command=self.button_get_definition)
+        self.view.sentence_button.config(command=self.button_get_sentence)
 
     def button_get_word(self):
         data = self.model.get_word_json()
@@ -35,7 +38,27 @@ class Controller:
         self.engine.runAndWait()
 
     def button_reveal_word(self):
+
         self.view.label_win.config(text=f"The word was: {self.model.word}")
         self.engine.say(f"The word was: {self.model.word}")
+        self.engine.runAndWait()
+        
+    def button_get_definition(self):
+        word = self.model.word
+        definition = self.model.word_data[0]["meanings"][0]["definitions"][0]["definition"]
+        subs = "[DATAEXPUNGED]"
+        censored_definition = re.compile(re.escape(subs), re.IGNORECASE).sub(word, definition)
+        self.view.label_win.config(text=f"Definition: {censored_definition}")
+        self.engine.say(definition)
+        self.engine.runAndWait()
+        
+    def button_get_sentence(self):
+        print(self.model.word_data)
+        sentence = self.model.word_data[0]["meanings"][0]["definitions"][0]["example"]
+        word = self.model.word
+        subs = "[DATAEXPUNGED]"
+        censored_sentence = re.compile(re.escape(subs), re.IGNORECASE).sub(word, sentence)
+        self.view.label_win.config(text=f"Sentence: {censored_sentence}")
+        self.engine.say(sentence)
         self.engine.runAndWait()
         
