@@ -9,20 +9,20 @@ class Model():
 
     def get_word_json(self):
 
-        while True:
+        for _ in range(10):
             try:
-                response = req.get("https://random-word-api.herokuapp.com/word")
+                response = req.get("https://random-word-api.herokuapp.com/word",timeout=0.1)
                 response = response.json()
-                response = req.get("https://api.dictionaryapi.dev/api/v2/entries/en/"+response[0])
+                response = req.get("https://api.dictionaryapi.dev/api/v2/entries/en/"+response[0],timeout=0.4)
                 response = response.json()
-                if not response[0]["word"]:
-                    continue
+                if response[0]["word"]:
+                    return response
             except Exception as e:
                 print(f"Error: {e}")
             else:
                 break
 
-        return response
+        raise Exception("Data not found")
     
     def set_word(self, word):
         self.word = word

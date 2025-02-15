@@ -14,9 +14,11 @@ class Controller:
         self.view.sentence_button.config(command=self.button_get_sentence)
 
     def button_get_word(self):
+        self.view.get_button.config(text="Waiting...")
         data = self.model.get_word_json()
         print(data)
         self.model.set_data(data)
+        self.view.get_button.config(text="Get word")
         word = data[0]["word"]
         self.model.set_word(word)
         self.engine.say(word)
