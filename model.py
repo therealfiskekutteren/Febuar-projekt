@@ -82,4 +82,9 @@ class Model():
 
     def set_score(self,username,newscore):
         self.db.cursor.execute("UPDATE users SET score = %d WHERE username = %s ",(newscore,username))
+
+    def add_score(self,username,increment):
+        score = self.get_score(username)
+        newscore = score + increment
+        self.set_score(username,newscore)
         

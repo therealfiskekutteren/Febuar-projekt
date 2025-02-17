@@ -38,6 +38,7 @@ class Controller:
         spelling_page = self.view.frames["SpellingBeePage"]
         submitted = spelling_page.input_bar.get()
         if submitted == self.model.word:
+            self.model.add_score(1)
             spelling_page.label_win.config(text="Correct")
             self.engine.say("Correct")
         else:
@@ -89,6 +90,7 @@ class Controller:
         print(message)
         if success:
             self.view.show_frame("SpellingBeePage")
+            self.user = username
             self.button_get_word()
     
     def button_login_user(self):
@@ -99,4 +101,5 @@ class Controller:
         print(message)
         if success:
             self.view.show_frame("SpellingBeePage")
+            self.user = username
             self.button_get_word()
