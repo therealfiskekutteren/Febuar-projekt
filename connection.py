@@ -26,8 +26,8 @@ class Connection():
                     self.cursor = self.conn.cursor()
                     self.cursor.execute("SELECT database()")
                     record = self.cursor.fetchone()
-                    print("You are now connected to database: ",record)
+                    print("You are now connected to database: ",record[0])
             except mysql.connector.Error as e:
-                print("Error while connecting to MySQL: "+e)
+                print("Error while connecting to MySQL:"+e)
         else:
             print("Connection already exists")

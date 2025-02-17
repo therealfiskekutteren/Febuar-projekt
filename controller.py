@@ -58,23 +58,29 @@ class Controller:
     def button_get_definition(self):
         spelling_page = self.view.frames["SpellingBeePage"]
         word = self.model.word
-        definition = self.model.word_data[0]["meanings"][0]["definitions"][0]["definition"]
-        subs = "[DATAEXPUNGED]"
-        censored_definition = re.compile(re.escape(subs), re.IGNORECASE).sub(word, definition)
-        spelling_page.label_win.config(text=f"Definition: {censored_definition}")
-        self.engine.say(definition)
-        self.engine.runAndWait()
+        try:
+            definition = self.model.word_data[0]["meanings"][0]["definitions"][0]["definition"]
+            subs = "[DATAEXPUNGED]"
+            censored_definition = re.compile(re.escape(subs), re.IGNORECASE).sub(word, definition)
+            spelling_page.label_win.config(text=f"Definition: {censored_definition}")
+            self.engine.say(definition)
+            self.engine.runAndWait()
+        except:
+            spelling_page.label_win.config(text=f"Definition not found")
         
     def button_get_sentence(self):
         spelling_page = self.view.frames["SpellingBeePage"]
-        sentence = self.model.word_data[0]["meanings"][0]["definitions"][0]["example"]
-        word = self.model.word
-        subs = "[DATAEXPUNGED]"
-        censored_sentence = re.compile(re.escape(subs), re.IGNORECASE).sub(word, sentence)
-        spelling_page.label_win.config(text=f"Sentence: {censored_sentence}")
-        self.engine.say(sentence)
-        self.engine.runAndWait()
-        
+        try:
+            sentence = self.model.word_data[0]["meanings"][0]["definitions"][0]["example"]
+            word = self.model.word
+            subs = "[DATAEXPUNGED]"
+            censored_sentence = re.compile(re.escape(subs), re.IGNORECASE).sub(word, sentence)
+            spelling_page.label_win.config(text=f"Sentence: {censored_sentence}")
+            self.engine.say(sentence)
+            self.engine.runAndWait()
+        except:
+            spelling_page.label_win_config(text=f"Sentence not found")
+
     def button_create_user(self):
         login_page = self.view.frames["LoginPage"]
         username = login_page.username_entry.get()
@@ -83,6 +89,7 @@ class Controller:
         print(message)
         if success:
             self.view.show_frame("SpellingBeePage")
+            self.button_get_word()
     
     def button_login_user(self):
         login_page = self.view.frames["LoginPage"]
@@ -92,3 +99,4 @@ class Controller:
         print(message)
         if success:
             self.view.show_frame("SpellingBeePage")
+            self.button_get_word()

@@ -2,6 +2,7 @@ import requests as req
 import json
 import mysql.connector
 import re
+from hashlib import sha256
 
 class Model():
     def __init__(self,db_connection):
@@ -49,15 +50,16 @@ class Model():
             if not self.password_is_valid(password):
                 return False, "Your password is not valid.\nMinimum of 6 characters,Max 12, at least one letter,one number and one special character."
             else:
+                password = sha256(password.encode('utf-8')).hexdigest()
                 self.db.cursor.execute("INSERT INTO users(username,password,score) VALUES(%s,%s,0)",(username,password))
                 self.db.conn.commit()
                 return True, "User Created"
     
     def login_user(self,username,password):
         self.db.cursor.execute("SELECT password FROM users WHERE username = %s LIMIT 1",(username,))
-        result = self.db.cursor.fetchone()[0]
+        result = self.db.cursor.fetchall()[0]
         if result:
-            if result == password:
+            if sha256(result.encode('utf-8')).hexdigest() == password:
                 return True, "You're logged in"
             else:
                 return False, "Wrong password"
