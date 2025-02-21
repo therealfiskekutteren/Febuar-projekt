@@ -38,13 +38,17 @@ class Controller:
         spelling_page = self.view.frames["SpellingBeePage"]
         submitted = spelling_page.input_bar.get()
         if submitted == self.model.word:
-            self.model.add_score(1)
+            self.model.add_score(self.user,1)
+            self.update_score()
             spelling_page.label_win.config(text="Correct")
             self.engine.say("Correct")
+            self.engine.runAndWait()
+            self.button_get_word()
         else:
             spelling_page.label_win.config(text="Incorrect")
             self.engine.say("Incorrect")
-        self.engine.runAndWait()
+            self.engine.runAndWait()
+            self.button_get_word()
 
     def button_play_sound(self):
         self.engine.say(self.model.word)
@@ -55,6 +59,7 @@ class Controller:
         spelling_page.label_win.config(text=f"The word was: {self.model.word}")
         self.engine.say(f"The word was: {self.model.word}")
         self.engine.runAndWait()
+        self.button_get_word()
         
     def button_get_definition(self):
         spelling_page = self.view.frames["SpellingBeePage"]
@@ -91,6 +96,7 @@ class Controller:
         if success:
             self.view.show_frame("SpellingBeePage")
             self.user = username
+            self.update_score()
             self.button_get_word()
     
     def button_login_user(self):
@@ -102,4 +108,10 @@ class Controller:
         if success:
             self.view.show_frame("SpellingBeePage")
             self.user = username
+            self.update_score()
             self.button_get_word()
+    
+    def update_score(self):
+        spelling_page = self.view.frames["SpellingBeePage"]
+        new_score = self.model.get_score(self.user)
+        spelling_page.score_label.config(text="Score: "+str(new_score))

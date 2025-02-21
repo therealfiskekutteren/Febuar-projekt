@@ -57,9 +57,9 @@ class Model():
     
     def login_user(self,username,password):
         self.db.cursor.execute("SELECT password FROM users WHERE username = %s LIMIT 1",(username,))
-        result = self.db.cursor.fetchall()[0]
+        result = self.db.cursor.fetchone()[0]
         if result:
-            if sha256(result.encode('utf-8')).hexdigest() == password:
+            if sha256(password.encode('utf-8')).hexdigest() == result:
                 return True, "You're logged in"
             else:
                 return False, "Wrong password"
@@ -73,18 +73,20 @@ class Model():
 
     def get_score(self,username):
         self.db.cursor.execute("SELECT score FROM users WHERE username = %s LIMIT 1",(username,))
-        result = self.db.cursor.fetchall()
-        if result:
+        result = self.db.cursor.fetchone()[0]
+        if result or result == 0:
             return result
         else: 
             raise Exception("None value")
 
 
     def set_score(self,username,newscore):
-        self.db.cursor.execute("UPDATE users SET score = %d WHERE username = %s ",(newscore,username))
+        self.db.cursor.execute("UPDATE users SET score = %s WHERE username = %s ",(newscore,username))
+        self.db.conn.commit()
 
     def add_score(self,username,increment):
         score = self.get_score(username)
         newscore = score + increment
         self.set_score(username,newscore)
+
         

@@ -87,6 +87,9 @@ class SpellingBeePage(tk.Frame):
         self.label_win = tk.Label(self, text="")
         self.label_win.pack(pady=10)
         
+        self.score_label = tk.Label(self, text="Score: 0", font=("Helvetica", 14))
+        self.score_label.pack(pady=10)
+
         self.check_button = tk.Button(self, text="Submit word")
         self.check_button.pack(pady=5)
         
