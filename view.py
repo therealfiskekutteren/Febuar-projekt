@@ -46,16 +46,29 @@ class LoginPage(tk.Frame):
         self.password_label = tk.Label(self, text="Password:")
         self.password_label.pack(pady=(20,5))
 
-        #For secret password
-        #self.password_entry = tk.Entry(self, show="*")
-        self.password_entry = tk.Entry(self)
+        self.password_entry = tk.Entry(self,show="*")
         self.password_entry.pack()
+
+        self.show_password = tk.BooleanVar(value=False)
+        self.password_check = tk.Checkbutton(
+            self,
+            text="Show password?",
+            variable=self.show_password,
+            command=self.toggle_password_visibility
+        )
+        self.password_check.pack(pady=(5,10))
         
         self.login_button = tk.Button(self, text="Login")
         self.login_button.pack(pady=20)
         
         self.create_account_button = tk.Button(self, text="Create Account")
         self.create_account_button.pack()
+
+    def toggle_password_visibility(self):
+        if self.show_password.get():
+            self.password_entry.config(show="")
+        else:
+            self.password_entry.config(show="*")
 
 # SpellingBeePage only contains the GUI elements for the spelling bee.
 class SpellingBeePage(tk.Frame):
