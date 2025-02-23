@@ -2,7 +2,7 @@ import tkinter as tk
 class View:
     def __init__(self):
         self.root = tk.Tk()
-        self.controller = None
+        #self.controller = None         No need for this
         self.root.geometry("400x400")
         self.root.title("Spelling Bee App")
 
@@ -23,8 +23,9 @@ class View:
         frame = self.frames[frame_name]
         frame.tkraise()
 
-    def set_controller(self,controller):
-        self.controller = controller
+    #No need
+    # def set_controller(self,controller):
+    #     self.controller = controller
 
     def run(self):
         self.root.mainloop()
