@@ -3,6 +3,7 @@ import json
 import mysql.connector
 import re
 from hashlib import sha256
+import random
 
 class Model():
     def __init__(self,db_connection):
@@ -13,7 +14,7 @@ class Model():
 
     def setup_database(self):
         self.db.cursor.execute("""
-                               CREATE TABLE IF NOT EXISTS users(id int primary key auto_increment,username varChar(255),password varChar(255),score int)
+                               CREATE TABLE IF NOT EXISTS users(id int primary key auto_increment,username varChar(255),password varChar(255),score int,salt int)
                                """)
         self.db.conn.commit()
         print("Table maybe created?")
@@ -50,8 +51,9 @@ class Model():
             if not self.password_is_valid(password):
                 return False, "Your password is not valid.\nMinimum of 6 characters,Max 12, at least one letter,one number and one special character."
             else:
-                password = sha256(password.encode('utf-8')).hexdigest()
-                self.db.cursor.execute("INSERT INTO users(username,password,score) VALUES(%s,%s,0)",(username,password))
+                salt = random.randint(0,2**32)
+                password = sha256((password+str(salt)).encode('utf-8')).hexdigest()
+                self.db.cursor.execute("INSERT INTO users(username,password,score,salt) VALUES(%s,%s,0,%s)",(username,password,salt))
                 self.db.conn.commit()
                 return True, "User Created"
     
@@ -59,7 +61,9 @@ class Model():
         self.db.cursor.execute("SELECT password FROM users WHERE username = %s LIMIT 1",(username,))
         result = self.db.cursor.fetchone()[0]
         if result:
-            if sha256(password.encode('utf-8')).hexdigest() == result:
+            self.db.cursor.execute("SELECT salt FROM users WHERE username = %s LIMIT 1",(username,))
+            salt = self.db.cursor.fetchone()[0]
+            if sha256((password+salt).encode('utf-8')).hexdigest() == result:
                 return True, "You're logged in"
             else:
                 return False, "Wrong password"

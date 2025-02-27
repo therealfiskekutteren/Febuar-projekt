@@ -12,7 +12,7 @@ def main():
     um = Model(connection)
     uv = View()
     uc = Controller(um, uv)
-    uv.set_controller(uc)
+    #uv.set_controller(uc) Ubrugelig
     uv.run()
 def test():
     engine = tts.init()
