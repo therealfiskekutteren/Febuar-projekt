@@ -31,8 +31,6 @@ class Model():
                     return response
             except Exception as e:
                 print(f"Error: {e}")
-            else:
-                break
 
         raise Exception("Data not found")
     
